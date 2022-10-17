@@ -88,9 +88,43 @@ class BinarySearchTree {
     }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    this.rooot = this.removeNode(this.rooot, data);
+  }
+  minNodeFoRemove(thisNode) {
+    if (thisNode.left === null)
+        return thisNode;
+    else
+        return this.minNodeFoRemove(thisNode.left);
+}
+  removeNode (thisNode, data) {
+    if (thisNode === null) {
+      return null;
+  } else if (data < thisNode.data) {
+    thisNode.left = this.removeNode(thisNode.left, data);
+    return thisNode;
+  } else if (data > thisNode.data) {
+    thisNode.right = this.removeNode(thisNode.right, data);
+    return thisNode;
+  } else {
+    if (!thisNode.left && !thisNode.right) {
+      thisNode = null;
+      return thisNode;
+    }
+    if (!thisNode.left) {
+      thisNode = thisNode.right;
+      return thisNode;
+    }
+    if (!thisNode.right) {
+      thisNode = thisNode.left;
+      return thisNode;
+    }
+
+    let NodeToInsert = this.minNodeFoRemove(thisNode.right);
+    thisNode.data = NodeToInsert.data;
+    thisNode.right = this.removeNode(thisNode.right, NodeToInsert.data);
+    return thisNode;
+  }
   }
 
   min() {
@@ -122,10 +156,13 @@ const visibleTree = new BinarySearchTree();
 
 // visibleTree.add(10);
 // visibleTree.add(12);
+// visibleTree.add(11);
 // visibleTree.add(14);
+// visibleTree.add(13);
 // visibleTree.add(9);
 // visibleTree.add(5);
 // visibleTree.add(3);
+// visibleTree.add(1);
 // console.log(visibleTree);
 
 module.exports = {
